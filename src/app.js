@@ -39,6 +39,17 @@ app.put("/repositories/:id", (request, response) => {
 
   const {title,url} = request.body;
   const {id} = request.params;
+
+  const projectIndex = repositories.findIndex(project => project.id == id);
+
+  if(projectIndex < 0){
+    return response.status(400).json({error: "project not found."});
+  }
+
+  const project = {id, title, url};
+  repositories[projectIndex] = project;
+  
+  return response.json(project);
 });
 
 app.delete("/repositories/:id", (request, response) => {
