@@ -37,7 +37,7 @@ app.put("/repositories/:id", (request, response) => {
   /** A rota deve alterar apenas o title, a url e as techs do repositório 
    * que possua o id igual ao id presente nos parâmetros da rota; */
 
-  const {title,url} = request.body;
+  const {title,url, techs} = request.body;
   const {id} = request.params;
 
   const repositoryIndex = repositories.findIndex(repository => repository.id == id);
@@ -49,6 +49,7 @@ app.put("/repositories/:id", (request, response) => {
   const repository = repositories[repositoryIndex];
   repository.title = title;
   repository.url = url;
+  repositories.techs = techs;
 
   repositories[repositoryIndex] = repository;
   
@@ -85,6 +86,27 @@ app.post("/repositories/:id/like", (request, response) => {
 
   const repository = repositories[repositoryIndex];
   repository.likes = repository.likes+1;
+
+  repositories[repositoryIndex] = repository;
+
+  return response.json(repository);
+});
+
+app.post("/repositories/:id/tech", (request, response) => {
+  /**
+   *  A rota deve adicionar uma nova tech mantem as techs do repository
+   */
+
+  const {id} = request.params;
+  const {tech} = request.body;
+
+  const repositoryIndex = repositories.findIndex(repository => repository.id == id);
+  if(repositoryIndex < 0){
+    return response.status(400).json({error: "repository not found."});
+  }
+
+  const repository = repositories[repositoryIndex];
+  repository.techs = [...repository.techs, tech];
 
   repositories[repositoryIndex] = repository;
 
