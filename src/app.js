@@ -26,10 +26,10 @@ app.post("/repositories", (request, response) => {
    *  e de sempre iniciar os likes como 0.
    */
   const {title,url,techs} = request.body;
-  const project = {id: uuid(), title, url, techs, likes: 0};
-  repositories.push(project);
+  const repository = {id: uuid(), title, url, techs, likes: 0};
+  repositories.push(repository);
 
-  return response.json(project);
+  return response.json(repository);
 
 });
 
@@ -40,28 +40,31 @@ app.put("/repositories/:id", (request, response) => {
   const {title,url} = request.body;
   const {id} = request.params;
 
-  const projectIndex = repositories.findIndex(project => project.id == id);
+  const repositoryIndex = repositories.findIndex(repository => repository.id == id);
 
-  if(projectIndex < 0){
-    return response.status(400).json({error: "project not found."});
+  if(repositoryIndex < 0){
+    return response.status(400).json({error: "repository not found."});
   }
 
-  const project = {id, title, url};
-  repositories[projectIndex] = project;
+  const repository = repositories[repositoryIndex];
+  repository.title = title;
+  repository.url = url;
+
+  repositories[repositoryIndex] = repository;
   
-  return response.json(project);
+  return response.json(repository);
 });
 
 app.delete("/repositories/:id", (request, response) => {
   const {id} = request.params;
 
-  const projectIndex = repositories.findIndex(project => project.id == id);
+  const repositoryIndex = repositories.findIndex(repository => repository.id == id);
 
-  if(projectIndex < 0){
-    return response.status(400).json({error: "project not found."});
+  if(repositoryIndex < 0){
+    return response.status(400).json({error: "repository not found."});
   }
 
-  repositories.slice(projectIndex, 1);
+  repositories.slice(repositoryIndex, 1);
   return response.status(204).send();
 });
 
@@ -75,17 +78,17 @@ app.post("/repositories/:id/like", (request, response) => {
 
   const {id} = request.params;
 
-  const projectIndex = repositories.findIndex(project => project.id == id);
-  if(projectIndex < 0){
-    return response.status(400).json({error: "project not found."});
+  const repositoryIndex = repositories.findIndex(repository => repository.id == id);
+  if(repositoryIndex < 0){
+    return response.status(400).json({error: "repository not found."});
   }
 
-  const project = repositories[projectIndex];
-  project.likes = project.likes+1;
+  const repository = repositories[repositoryIndex];
+  repository.likes = repository.likes+1;
 
-  repositories[projectIndex] = project;
+  repositories[repositoryIndex] = repository;
 
-  return response.json(project);
+  return response.json(repository);
 });
 
 module.exports = app;
