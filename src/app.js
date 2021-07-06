@@ -11,7 +11,9 @@ app.use(cors());
 const repositories = [];
 
 app.get("/repositories", (request, response) => {
-  // TODO
+  // rota que lista todos os repositorios
+
+  return response.json(repositories);
 });
 
 app.post("/repositories", (request, response) => {
@@ -24,9 +26,9 @@ app.post("/repositories", (request, response) => {
    *  e de sempre iniciar os likes como 0.
    */
   const {title,url,techs} = request.body;
-  const project = {id: uuid(), title, url, techs:["Node.js", "React"], likes:0};
+  const project = {id: uuid(), title, url, techs, likes: 0};
   repositories.push(url);
-  
+
   return response.json(project);
 
 });
