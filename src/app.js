@@ -66,7 +66,26 @@ app.delete("/repositories/:id", (request, response) => {
 });
 
 app.post("/repositories/:id/like", (request, response) => {
-  // TODO
+  /**
+   *  A rota deve aumentar o número de likes do repositório específico 
+   * escolhido através do id presente 
+   * nos parâmetros da rota, a cada chamada dessa rota, o número de likes 
+   * deve ser aumentado em 1;
+   */
+
+  const {id} = request.params;
+
+  const projectIndex = repositories.findIndex(project => project.id == id);
+  if(projectIndex < 0){
+    return response.status(400).json({error: "project not found."});
+  }
+
+  const project = repositories[projectIndex];
+  project.likes = project.likes+1;
+
+  repositories[projectIndex] = project;
+
+  return response.json(project);
 });
 
 module.exports = app;
