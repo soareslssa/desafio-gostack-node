@@ -27,14 +27,18 @@ app.post("/repositories", (request, response) => {
    */
   const {title,url,techs} = request.body;
   const project = {id: uuid(), title, url, techs, likes: 0};
-  repositories.push(url);
+  repositories.push(project);
 
   return response.json(project);
 
 });
 
 app.put("/repositories/:id", (request, response) => {
-  // TODO
+  /** A rota deve alterar apenas o title, a url e as techs do repositório 
+   * que possua o id igual ao id presente nos parâmetros da rota; */
+
+  const {title,url} = request.body;
+  const {id} = request.params;
 });
 
 app.delete("/repositories/:id", (request, response) => {
