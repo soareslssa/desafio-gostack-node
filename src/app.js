@@ -36,11 +36,8 @@ app.put("/repositories/:id", (request, response) => {
     return response.status(400).json({error: "repository not found."});
   }
 
-  const repository = repositories[repositoryIndex];
-  repository.title = title;
-  repository.url = url;
-  repositories.techs = techs;
 
+  const repository = {id,title,url};
   repositories[repositoryIndex] = repository;
   
   return response.json(repository);
@@ -55,7 +52,7 @@ app.delete("/repositories/:id", (request, response) => {
     return response.status(400).json({error: "repository not found."});
   }
 
-  repositories.slice(repositoryIndex, 1);
+  repositories.splice(repositoryIndex, 1);
   return response.status(204).send();
 });
 
